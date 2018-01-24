@@ -1,10 +1,23 @@
+#game {
+    display: inline-block;
+}
+
+.extras {
+    display: inline-block;
+    vertical-align: top;
+}
+
+
+div#config label {
+    display: block;
+}
 
 td {
   border: 1px solid;
   width: 30px;
   height: 30px;
   text-align: center;
-  background-color: #000;
+  background-color: #fff;
   transition: 1s all;
 }
 .mina{
