@@ -1,4 +1,4 @@
-new function (){
+var a = new function (){
   var ancho = 20,
     alto = 20,
     minas = 50,
@@ -61,11 +61,17 @@ function Cell(x, y, tr, p){
     tsp = p;
 
   function loadBColor (a){
-    if(clicked || sonar || a){
-      td.style.backgroundColor = ((mina)?"#000": "#"+(0xfff-parseInt("0x"+n+""+n+"0", 16)).toString(16));
+    if (a){
+      td.style.backgroundColor = ((mina)?"#000": "#"+(0xfff-parseInt("0x"+(n+1)+"0"+(1+n)+"", 16)).toString(16));
       td.appendChild(span);
+    }else if(clicked){
+        td.style.backgroundColor = "#"+(0xfff-parseInt("0x"+(n+1)+"0"+(1+n)+"", 16)).toString(16);
+        td.appendChild(span);
     }else if(bandera){
       td.style.backgroundColor = "red";
+    }else if(sonar){
+      td.style.backgroundColor = "#"+(0xfff-parseInt("0x"+(1+n)+""+(1+n)+"0", 16)).toString(16);
+      td.appendChild(span);
     }else{
       td.style.backgroundColor = "#fff";
     }
@@ -91,8 +97,8 @@ function Cell(x, y, tr, p){
           }
         }
       }
-      tsp.changeMinas();
     }
+    tsp.changeMinas();
   }
   this.clickRight = function(){
     if(clicked){
@@ -106,7 +112,7 @@ function Cell(x, y, tr, p){
   }
   this.setMina = function(a, b){
     mina = b;
-    var tx ,ty;
+    var txp ,typ;
     for(tx = -1; tx < 2; ++tx){
       for(ty = -1; ty < 2; ++ty){
         a(tx+x, ty+y, b);
@@ -125,6 +131,7 @@ function Cell(x, y, tr, p){
     //Visual
   var td = newNode("td", tr, {"onclick": ts.click, "oncontextmenu": ts.clickRight}),
     span = newNode("span", ((sonar)?td:null), {"innerHTML": "0"});
+    loadBColor();
 }
 
 this.click = function (tx, ty){
@@ -134,6 +141,8 @@ this.click = function (tx, ty){
 };
 
 function generarTabla(){
+  tabla = [];
+  t_element.innerHTML = "";
   var r, c, d;
   for(c = 0; c < ancho; ++c){
     r = newNode("tr", t_element);
@@ -144,13 +153,14 @@ function generarTabla(){
   }
 }
 function generarMinas(a){
-  var generadas = 0, x, y;
+  var generadas = 0, tx, ty;
+  minas_a = [];
   while(generadas < minas){
-    x = Math.floor(Math.random()*ancho),
-    y = Math.floor(Math.random()*alto);
-    if(tabla[x][y].isMina()){continue;}
-    tabla[x][y].setMina(addMina, true);
-    minas_a.push(tabla[x][y]);
+    tx = Math.floor(Math.random()*ancho),
+    ty = Math.floor(Math.random()*alto);
+    if(tabla[tx][ty].isMina()){continue;}
+    tabla[tx][ty].setMina(addMina, true);
+    minas_a.push(tabla[tx][ty]);
     ++generadas;
   }
 
@@ -202,20 +212,18 @@ this.showAll = function(){
   }
 }
 function moveMina(o){
-  var x = Math.floor(Math.random()*ancho),
-    y = Math.floor(Math.random()*alto);
-  if(!o.isClicked() && !o.isBandera() && !tabla[x][y].isMina() && !tabla[x][y].isClicked() && !tabla[x][y].isBandera()){
+  var tx = Math.floor(Math.random()*ancho),
+    ty = Math.floor(Math.random()*alto);
+  if(!o.isClicked() && !o.isBandera() && !tabla[tx][ty].isMina() && !tabla[tx][ty].isClicked() && !tabla[tx][ty].isBandera()){
     o.setMina(addMina, false);
-    tabla[x][y].setMina(addMina, true);
-    minas_a.push(tabla[x][y]);
+    tabla[tx][ty].setMina(addMina, true);
+    minas_a.push(tabla[tx][ty]);
     return true;
   }else{
     return false;
   }
 }
 function reset(){
-  tabla = [];
-  t_element.innerHTML = "";
   ts.changeAgua(alto*ancho-minas);
   ts.changeBanderas(0);
   init();

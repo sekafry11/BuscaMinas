@@ -23,3 +23,8 @@ td {
 .mina{
   background-color: red;
 }
+.ayuda {
+    vertical-align: top;
+    display: inline-block;
+    font-size: 30px;
+}
