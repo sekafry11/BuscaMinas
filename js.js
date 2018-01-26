@@ -32,8 +32,8 @@ var a = new function (){
     c_ola = newNode("input", l_ola, {"checked": ola, "type": "checkbox", "onchange": function(){ola = c_ola.checked;}});
     li_ola = newNode("label", a, {"innerHTML": "Intervalo de las olas (cada x pasos): "});
     i_ola = newNode("input", li_ola, {"value": ola_m, "onchange": function(){ola_m = i_ancho.value;}});
-    lp_ola = newNode("input", a, {"innerHTML": "% de fuerza de las olas: "});
-    ip_ola = newNode("input", a, {"value": ola_p, "type": "number", "onchange": function(){ola_p = ip_ola.value}});
+    lp_ola = newNode("label", a, {"innerHTML": "% de fuerza de las olas: "});
+    ip_ola = newNode("input", lp_ola, {"value": ola_p, "type": "number", "onchange": function(){ola_p = ip_ola.value}});
 
 
     b_reset = newNode("button", a, {"innerHTML": "Nuevo Juego", "onclick": reset});
@@ -46,7 +46,7 @@ var a = new function (){
     s_agua = newNode("span", p_agua, {"innerHTML": agua});
 
     p_ola = newNode("p", a, {"innerHTML": "Pasos para siguiente ola: "});
-    s_ola = newNode("span", p_ola, {"innerHTML": ola_p});
+    s_ola = newNode("span", p_ola, {"innerHTML": ola_m});
     pm_ola = newNode("p", a, {"innerHTML": "Minas movidas en la ultima ola: "});
     sm_ola = newNode("span", pm_ola, movidas);
 function Cell(x, y, tr, p){
@@ -144,13 +144,10 @@ function generarTabla(){
   tabla = [];
   t_element.innerHTML = "";
   var r, c, d;
-  for(c = 0; c < ancho; ++c){
-    r = newNode("tr", t_element);
-    for(d = 0; d < alto; ++d){
-      if(!tabla[c]){tabla[c] = []}
-      tabla[c][d] = new Cell(c, d, r, ts);
-    }
-  }
+  newTable(t_element, ancho, alto, function(tr, x, y){
+      if(!tabla[x]){tabla[x] = []}
+      tabla[x][y] = new Cell(x, y, tr, ts);
+  });
 }
 function generarMinas(a){
   var generadas = 0, tx, ty;
