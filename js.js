@@ -1,4 +1,4 @@
-var a = new function (){
+new function (){
   var ancho = 20,
     alto = 20,
     minas = 50,
@@ -143,7 +143,6 @@ this.click = function (tx, ty){
 function generarTabla(){
   tabla = [];
   t_element.innerHTML = "";
-  var r, c, d;
   newTable(t_element, ancho, alto, function(tr, x, y){
       if(!tabla[x]){tabla[x] = []}
       tabla[x][y] = new Cell(x, y, tr, ts);
